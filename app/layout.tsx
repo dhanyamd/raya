@@ -3,7 +3,9 @@ import { Manrope, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
-
+import { ThemeProvider } from "@/components/theme-provider";
+import { QueryProvider } from "@/components/query-provider";
+import { HotkeysProviders } from "@/components/hot-key-provider";
 
 const poppins = Manrope({
   subsets:["latin"],
@@ -25,7 +27,14 @@ export default function RootLayout({
       <body
         className={`${poppins.className} antialiased`}
       >
-        {children}
+        <QueryProvider>
+          <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem>
+            <HotkeysProviders>
+              <Toaster />
+              {children}
+            </HotkeysProviders>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
