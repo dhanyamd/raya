@@ -12,10 +12,10 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Hint } from "@/components/ui/hint";
 import { toast } from "sonner";
 import { useGenerateWorkspaceInvite, useGetWorkspaceMemebers } from "@/modules/invites/hooks/invites";
 import { useWorkspaceStore } from "../store";
+import { Hint } from "@/components/ui/hint";
 
 const InviteMember = () => {
   const [inviteLink, setInviteLink] = useState("");
