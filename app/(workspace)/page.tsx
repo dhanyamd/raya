@@ -10,8 +10,8 @@ import RequestPlayground from "@/modules/request/components/request-playground";
 
 import TabbedSidebar from "@/modules/workspace/components/sidebar";
 
-import { Loader } from "lucide-react";
 import { useGetWorkspace } from "@/modules/workspace/hooks/workspace";
+import { Loader } from "lucide-react";
 
 const Page = () => {
   const { selectedWorkspace } = useWorkspaceStore();
