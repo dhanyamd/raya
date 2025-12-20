@@ -1,11 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Archive, Clock, Code, Share2, ExternalLink, HelpCircle, Plus, Search, Upload, Loader } from 'lucide-react';
 import React, { useState } from 'react';
-import CreateCollection from '../../collection/components/create-collection';
-import EmptyCollections from '@/modules/collections/components/empty-collections';
-import CollectionFolder from '@/modules/collections/components/collection-folder';
 import { useCollections } from '@/modules/collection/hooks/collections';
-
 
 interface Props {
   currentWorkspace: any;

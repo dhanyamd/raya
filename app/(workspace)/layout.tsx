@@ -1,6 +1,7 @@
 import { currentUser } from '@/modules/authentication/actions'
 import Header from '@/modules/Layout/components/header'
 import { initializeWorkspace } from '@/modules/workspace/actions'
+import TabbedLeftPanel from '@/modules/workspace/components/tabbed-left-pannel'
 import React from 'react'
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
