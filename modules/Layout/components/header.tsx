@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/resizable";
 import RequestPlayground from "@/modules/request/components/request-playground";
 
-import TabbedSidebar from "@/modules/workspace/components/sidebar";
 
 import { Loader } from "lucide-react";
 import { useWorkspaceStore } from "../store";
 import { useGetWorkspace } from "@/modules/workspace/hooks/workspace";
+import TabbedSidebar from "@/modules/workspace/components/sidebar";
 
 const Page = () => {
   const { selectedWorkspace } = useWorkspaceStore();
