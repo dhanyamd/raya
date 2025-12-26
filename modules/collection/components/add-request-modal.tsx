@@ -5,11 +5,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Folder, Plus, Search, X } from "lucide-react";
 import React, { useState, useEffect, act } from "react";
 import { toast } from "sonner";
-import { useAddRequestToCollection, useSaveRequest } from "@/modules/request/hooks/request";
 import { REST_METHOD } from "@prisma/client";
 import { useWorkspaceStore } from "@/modules/Layout/store";
 import { useCollections } from "../hooks/collections";
 import { Button } from "@/components/ui/button";
+import { useAddRequestToCollection } from "@/modules/request/hooks/request";
 
 
 const SaveRequestToCollectionModal = ({
