@@ -2,7 +2,6 @@
 
 import { useHotkeys } from "react-hotkeys-hook";
 import RequestEditor from "./request-editor";
-import TabBar from "./tab-bar";
 import { useRequestPlaygroundStore } from "../store/useRequestStore";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -11,6 +10,7 @@ import { REST_METHOD } from "@prisma/client";
 
 import { Unplug } from "lucide-react";
 import { useSaveRequest } from "../hooks/request";
+import TabBar from "./tab-bar";
 
 export default function PlaygroundPage() {
   const { tabs, activeTabId, addTab } = useRequestPlaygroundStore();
