@@ -24,11 +24,10 @@ import {
 } from '@/components/ui/form'
 import { RotateCcw, Copy, Check, Code, AlignLeft, FileText, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useGenerateJsonBody } from '@/modules/ai/hooks/ai-suggestion'
 
 import { useWorkspaceStore } from '@/modules/Layout/store'
+import { useGenerateJsonBody } from '@/modules/ai/hooks/ai-suggestion'
 import { useRequestPlaygroundStore } from '../store/useRequestStore'
-
 
 const MonacoEditor = dynamic(
   () => import('@monaco-editor/react'),

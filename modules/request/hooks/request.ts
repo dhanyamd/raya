@@ -51,7 +51,7 @@ export function useRunRequest(requestId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => await run(requestId),
-    onSuccess: (data) => {
+    onSuccess: (data : any) => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });
       setResponseViewerData(data);
     },

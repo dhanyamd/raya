@@ -1,6 +1,6 @@
 import React from 'react'
+import { useRunRequest } from '../hooks/request'
 import { RequestTab } from '../store/useRequestStore'
-
 import {
   Select,
   SelectContent,
@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from 'lucide-react'
-import { useRunRequest } from '../hooks/request'
 import { toast } from 'sonner'
 
 interface Props {

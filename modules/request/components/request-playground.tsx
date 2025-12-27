@@ -1,16 +1,16 @@
 "use client";
 
 import { useHotkeys } from "react-hotkeys-hook";
-import RequestEditor from "./request-editor";
-import { useRequestPlaygroundStore } from "../store/useRequestStore";
 import { useState } from "react";
 import { toast } from "sonner";
-import SaveRequestToCollectionModal from "@/modules/collections/components/add-request-modal";
 import { REST_METHOD } from "@prisma/client";
 
 import { Unplug } from "lucide-react";
-import { useSaveRequest } from "../hooks/request";
 import TabBar from "./tab-bar";
+import { useSaveRequest } from "../hooks/request";
+import { useRequestPlaygroundStore } from "../store/useRequestStore";
+import SaveRequestToCollectionModal from "./save-to-collection-modal";
+import RequestEditor from "./request-editor";
 
 export default function PlaygroundPage() {
   const { tabs, activeTabId, addTab } = useRequestPlaygroundStore();
@@ -123,7 +123,7 @@ export default function PlaygroundPage() {
       <SaveRequestToCollectionModal
         isModalOpen={showSaveModal}
         setIsModalOpen={setShowSaveModal}
-        requestData={getCurrentRequestData()}
+        requestdata={getCurrentRequestData()}
         initialName={getCurrentRequestData().name}
       />
     </div>

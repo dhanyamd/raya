@@ -1,10 +1,10 @@
 import React from "react";
-import { RequestTab } from "../store/useRequestStore";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import KeyValueFormEditor from "./key-value-form";
 import BodyEditor from "./body-editor";
 import { toast } from "sonner";
+import { RequestTab } from "../store/useRequestStore";
 
 interface Props {
   tab: RequestTab;

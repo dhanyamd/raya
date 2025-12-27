@@ -4,10 +4,10 @@ import Modal from "@/components/ui/modal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { useAddRequestToCollection } from "@/modules/request/hooks/request";
 import { REST_METHOD } from "@prisma/client";
-import { useCollections } from "@/modules/collections/hooks/collections";
 import { useWorkspaceStore } from "@/modules/Layout/store";
+import { useCollections } from "@/modules/collection/hooks/collections";
+import { useAddRequestToCollection } from "../hooks/request";
 
 const SaveRequestToCollectionModal = ({
   isModalOpen,

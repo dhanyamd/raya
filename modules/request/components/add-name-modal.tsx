@@ -2,11 +2,11 @@
 import Modal from "@/components/ui/modal";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useRequestPlaygroundStore } from "../store/useRequestStore";
 import { Sparkle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSuggestRequestName } from "@/modules/ai/hooks/ai-suggestion";
 import { Input } from "@/components/ui/input";
+import { useRequestPlaygroundStore } from "../store/useRequestStore";
 
 const AddNameModal = ({
   isModalOpen,
@@ -68,7 +68,7 @@ const AddNameModal = ({
           onClick={async () => {
             if (!tab) return;
             try {
-              const result = await mutateAsync({
+              const result = await  mutateAsync({
                 workspaceName: tab.workspaceId || "Default Workspace",
                 method: (tab.method as "GET" | "POST" | "PUT" | "PATCH" | "DELETE") || "GET",
                 url: tab.url || "",

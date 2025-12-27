@@ -1,8 +1,8 @@
 "use client";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useRequestPlaygroundStore } from "../store/useRequestStore";
 import AddNameModal from "./add-name-modal";
+import { useRequestPlaygroundStore } from "../store/useRequestStore";
 
 export default function TabBar() {
   const { tabs, activeTabId, setActiveTab, addTab, closeTab } =
