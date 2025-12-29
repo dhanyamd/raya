@@ -19,7 +19,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-
+import AddRequestCollectionModal from "./add-request-modal";
 
 import { REST_METHOD } from "@prisma/client";
 import EditCollectionModal from "./edit-collection";
@@ -100,14 +100,14 @@ const CollectionFolder = ({ collection }: Props) => {
 
             <div className="flex flex-row justify-center items-center space-x-2">
               <FilePlus
-                className="w-4 h-4 text-zinc-400 hover:text-indigo-400 cursor-pointer"
+                className="w-4 h-4 text-zinc-400 hover:text-brown-400 cursor-pointer"
                 onClick={() => setIsAddRequestOpen(true)}
               />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="p-1 hover:bg-zinc-800 rounded">
-                    <EllipsisVertical className="w-4 h-4 text-zinc-400 hover:text-indigo-400" />
+                    <EllipsisVertical className="w-4 h-4 text-zinc-400 hover:text-brown-400" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48">
@@ -154,7 +154,7 @@ const CollectionFolder = ({ collection }: Props) => {
             {isPending ? (
               <div className="pl-8 py-2">
                 <div className="flex items-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-zinc-600 border-t-indigo-400 rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-zinc-600 border-t-brown-400 rounded-full animate-spin"></div>
                   <span className="text-xs text-zinc-500">
                     Loading requests...
                   </span>

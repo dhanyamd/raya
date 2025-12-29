@@ -5,14 +5,17 @@ import { currentUser } from "@/modules/authentication/actions";
 import { MEMBER_ROLE } from "@prisma/client";
 
 export const initializeWorkspace = async () => {
+  console.log("Initializing workspace...");
   const user = await currentUser();
 
   if (!user) {
+    console.log("User not found during initialization");
     return {
       success: true,
       error: "User not found",
     };
   }
+  console.log("User found:", user.id);
 
   try {
     const workspace = await db.workspace.upsert({
@@ -34,11 +37,12 @@ export const initializeWorkspace = async () => {
           },
         },
       },
-      include:{
-        members:true
+      include: {
+        members: true
       }
     });
 
+    console.log("Workspace initialized:", workspace.id);
     return {
       success: true,
       workspace,
@@ -92,6 +96,7 @@ export async function createWorkspace(name: string) {
 
 
 export const getWorkspaceById = async (id: string) => {
+  if (!id) return null;
   const workspace = await db.workspace.findUnique({
     where: { id },
     include: {

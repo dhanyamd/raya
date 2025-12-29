@@ -56,8 +56,8 @@ const InviteMember = () => {
     <DropdownMenu>
       <Hint label="Invite Member">
         <DropdownMenuTrigger asChild>
-          <Button className="border border-emerald-400 bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-400 hover:text-emerald-300">
-            <UserPlus className="size-4 text-emerald-400" />
+          <Button className="border border-brown-400 bg-brown-400/10 hover:bg-brown-400/20 text-brown-400 hover:text-brown-300">
+            <UserPlus className="size-4 text-brown-400" />
           </Button>
         </DropdownMenuTrigger>
       </Hint>
@@ -104,7 +104,7 @@ const InviteMember = () => {
 
           {/* Generate Button */}
           <Button
-            className="mt-3 w-full bg-emerald-500 hover:bg-emerald-600 text-white"
+            className="mt-3 w-full bg-brown-500 hover:bg-brown-600 text-white"
             onClick={generateInviteLink}
             disabled={isPending}
           >

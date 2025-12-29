@@ -40,7 +40,8 @@ interface UserButtonProps {
   showMemberSince?: boolean;
 }
 
-export default function UserButton({
+export default function 
+UserButton({
   user,
   onLogout,
   onSettings,

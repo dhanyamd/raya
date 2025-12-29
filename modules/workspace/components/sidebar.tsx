@@ -11,16 +11,17 @@ interface Props {
 }
 
 const TabbedSidebar = ({ currentWorkspace }: Props) => {
+  console.log("Sidebar Render:", { currentWorkspaceId: currentWorkspace?.id });
   const [activeTab, setActiveTab] = useState('Collections');
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const {data:collections , isLoading, isError} = useCollections(currentWorkspace?.id);
+  const { data: collections, isLoading, isError } = useCollections(currentWorkspace?.id);
 
-  
- 
-  if(isLoading) return (
+
+
+  if (isLoading) return (
     <div className="flex-1 flex items-center justify-center">
-      <Loader className="w-6 h-6 text-indigo-400 animate-spin" />
+      <Loader className="w-6 h-6 text-brown-400 animate-spin" />
     </div>
   )
 
@@ -36,7 +37,7 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
       case 'Collections':
         return (
           <div className="h-full bg-zinc-950 text-zinc-100 flex flex-col">
-         
+
             <div className="flex items-center justify-between p-4 border-b border-zinc-800">
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-zinc-400">{currentWorkspace?.name}</span>
@@ -48,21 +49,21 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
                 <ExternalLink className="w-4 h-4 text-zinc-400 hover:text-zinc-300 cursor-pointer" />
               </div>
             </div>
-            
 
-         
+
+
             <div className="p-4 border-b border-zinc-800">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-10 pr-4 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-10 pr-4 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
                 />
               </div>
             </div>
 
-          
+
             <div className="p-4 border-b border-zinc-800">
               <Button variant="ghost" onClick={() => setIsModalOpen(true)}>
                 <Plus className="w-4 h-4" />
@@ -70,16 +71,16 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
               </Button>
             </div>
 
-          {
-            collections && collections.length > 0 ? (
-              collections.map((collection) => (
-                <div className='flex flex-col justify-start items-start p-3 border-b border-zinc-800 w-full' key={collection.id}>
-                <CollectionFolder  collection={collection} />
-                </div>
-              ))
-            ) : (
-              <EmptyCollections />
-            )}
+            {
+              collections && collections.length > 0 ? (
+                collections.map((collection) => (
+                  <div className='flex flex-col justify-start items-start p-3 border-b border-zinc-800 w-full' key={collection.id}>
+                    <CollectionFolder collection={collection} />
+                  </div>
+                ))
+              ) : (
+                <EmptyCollections />
+              )}
           </div>
         );
 
@@ -96,11 +97,10 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
           <div
             key={index}
             onClick={() => setActiveTab(item.label)}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
-              activeTab === item.label
-                ? 'bg-indigo-600 text-white'
+            className={`w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${activeTab === item.label
+                ? 'bg-brown-600 text-white'
                 : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800'
-            }`}
+              }`}
           >
             <item.icon className="w-4 h-4" />
           </div>
@@ -109,13 +109,13 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
 
       <div className="flex-1 bg-zinc-900 overflow-y-auto">{renderTabContent()}</div>
 
-    
+
       <CreateCollection
         workspaceId={currentWorkspace?.id}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-      
+
     </div>
   );
 };

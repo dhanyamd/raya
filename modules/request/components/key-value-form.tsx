@@ -78,7 +78,7 @@ const KeyValueFormEditor: React.FC<KeyValueFormEditorProps> = ({
     const filteredItems = data.items
       .filter((item) => item.enabled && (item.key.trim() || item.value.trim()))
       .map(({ key, value }) => ({ key, value }));
-
+ 
     onSubmit(filteredItems);
   };
 

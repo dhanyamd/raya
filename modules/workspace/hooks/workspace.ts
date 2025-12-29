@@ -24,5 +24,6 @@ export function useGetWorkspace(id: string) {
   return useQuery({
     queryKey: ["workspace", id],
     queryFn: async () => getWorkspaceById(id),
+    enabled: !!id,
   });
 }

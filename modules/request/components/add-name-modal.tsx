@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Sparkle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSuggestRequestName } from "@/modules/ai/hooks/ai-suggestion";
 import { Input } from "@/components/ui/input";
 import { useRequestPlaygroundStore } from "../store/useRequestStore";
+import { useSuggestRequestName } from "@/modules/ai/hooks/ai-suggestion";
 
 const AddNameModal = ({
   isModalOpen,
@@ -86,7 +86,7 @@ const AddNameModal = ({
           }} 
           disabled={isPending}
         >
-          <Sparkles className="h-5 w-5 text-indigo-500" />
+          <Sparkles className="h-5 w-5 text-brown-500" />
         </Button>
         </div>
         {suggestions.length > 0 && (

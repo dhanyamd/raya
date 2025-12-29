@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/resizable";
 import { useWorkspaceStore } from "@/modules/Layout/store";
 import RequestPlayground from "@/modules/request/components/request-playground";
-import TabbedSidebar from "@/modules/workspace/components/sidebar";
 
+import TabbedSidebar from "@/modules/workspace/components/sidebar";
 
 import { useGetWorkspace } from "@/modules/workspace/hooks/workspace";
 import { Loader } from "lucide-react";
@@ -20,7 +20,7 @@ const Page = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <Loader className="animate-spin h-6 w-6 text-indigo-500" />
+        <Loader className="animate-spin h-6 w-6 text-brown-500" />
       </div>
     );
   }

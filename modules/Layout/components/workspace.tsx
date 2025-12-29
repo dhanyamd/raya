@@ -33,7 +33,7 @@ const WorkSpace = () => {
 
  
   if (isLoading) {
-    return <Loader className="animate-spin size-4 text-indigo-400" />;
+    return <Loader className="animate-spin size-4 text-brown-400" />;
   }
 
   if (!workspaces || workspaces.length === 0) {
@@ -50,9 +50,9 @@ const WorkSpace = () => {
             if (ws) setSelectedWorkspace(ws);
           }}
         >
-          <SelectTrigger className="border border-indigo-400 bg-indigo-400/10 hover:bg-indigo-400/20 text-indigo-400 hover:text-indigo-300 flex flex-row items-center space-x-1">
-            <User className="size-4 text-indigo-400" />
-            <span className="text-sm text-indigo-400 font-semibold">
+          <SelectTrigger className="border border-brown-400 bg-brown-400/10 hover:bg-brown-400/20 text-brown-400 hover:text-brown-300 flex flex-row items-center space-x-1">
+            <User className="size-4 text-brown-400" />
+            <span className="text-sm text-brown-400 font-semibold">
               <SelectValue placeholder="Select workspace" />
             </span>
           </SelectTrigger>
@@ -66,7 +66,7 @@ const WorkSpace = () => {
             <div className="p-2 flex flex-row justify-between items-center">
               <span className="text-sm font-semibold text-zinc-600">My Workspaces</span>
               <Button size="icon" variant="outline" onClick={() => setIsModalOpen(true)}>
-                <Plus size={16} className="text-indigo-400" />
+                <Plus size={16} className="text-brown-400" />
               </Button>
             </div>
           </SelectContent>

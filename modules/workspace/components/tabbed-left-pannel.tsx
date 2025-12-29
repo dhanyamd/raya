@@ -25,7 +25,7 @@ const TabbedLeftPanel = () => {
                             href={item.link}
                             key={index}
                             className={`w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${activeTab === item.label
-                                    ? "bg-indigo-600 text-white"
+                                    ? "bg-brown-600 text-white"
                                     : "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800"
                                 }`}
                         >

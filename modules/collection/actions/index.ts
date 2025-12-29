@@ -3,46 +3,50 @@
 import db from "@/lib/db";
 
 export const createCollection = async (workspaceId: string, name: string) => {
-  const collection = await db.collection.create({
-    data: {
-      name,
-      workspace: {
-        connect: {
-          id: workspaceId,
-        },
-      },
-    },
-  });
+    if (!workspaceId || !name) {
+        throw new Error("Workspace ID and Name are required");
+    }
 
-  return collection;
+    const collection = await db.collection.create({
+        data: {
+            name,
+            workspace: {
+                connect: {
+                    id: workspaceId,
+                },
+            },
+        },
+    });
+
+    return collection;
 };
 
 export const getCollections = async (workspaceId: string) => {
-  const collections = await db.collection.findMany({
-    where: {
-      workspaceId,
-    },
-  });
+    const collections = await db.collection.findMany({
+        where: {
+            workspaceId,
+        },
+    });
 
-  return collections;
+    return collections;
 };
 
 
 export const deleteCollection = async (collectionId: string) => {
-  await db.collection.delete({
-    where: {
-      id: collectionId,
-    },
-  });
+    await db.collection.delete({
+        where: {
+            id: collectionId,
+        },
+    });
 };
 
 export const editCollection = async (collectionId: string, name: string) => {
-  await db.collection.update({
-    where: {
-      id: collectionId,
-    },
-    data: {
-      name,
-    },
-  });
+    await db.collection.update({
+        where: {
+            id: collectionId,
+        },
+        data: {
+            name,
+        },
+    });
 };

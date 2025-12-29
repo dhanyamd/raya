@@ -31,7 +31,7 @@ export default function TabBar() {
             onDoubleClick={() => onDoubleClick(tab.id)}
             onClick={() => setActiveTab(tab.id)}
             className={`group px-4 py-2 flex items-center gap-2 cursor-pointer ${activeTabId === tab.id
-                ? "bg-zinc-800 text-white border-t-2 border-indigo-500 rounded-sm mx-2 my-2"
+                ? "bg-zinc-800 text-white border-t-2 border-brown-500 rounded-sm mx-2 my-2"
                 : "text-zinc-400 hover:text-white"
               }`}
           >

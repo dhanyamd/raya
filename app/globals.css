@@ -44,6 +44,18 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Custom Brown Palette (User Defined OKLCH Reference) */
+  --color-brown-50: oklch(0.97 0.01 36.259);
+  --color-brown-100: oklch(0.92 0.02 36.259);
+  --color-brown-200: oklch(0.84 0.03 36.259);
+  --color-brown-300: oklch(0.74 0.04 36.259);
+  --color-brown-400: oklch(0.60 0.06 36.259);
+  --color-brown-500: oklch(0.48 0.08 36.259);
+  --color-brown-600: oklch(0.38 0.08 36.259);
+  --color-brown-700: oklch(0.32 0.08 36.259);
+  --color-brown-800: oklch(0.266 0.079 36.259);
+  --color-brown-900: oklch(0.20 0.06 36.259);
+  --color-brown-950: oklch(0.15 0.04 36.259);
 }
 
 :root {
@@ -119,6 +131,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
