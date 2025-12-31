@@ -12,6 +12,7 @@ import { useAddRequestToCollection } from "../hooks/request";
 const SaveRequestToCollectionModal = ({
   isModalOpen,
   setIsModalOpen,
+  
   collectionId,
   initialName = "Untitled",
 }: {
