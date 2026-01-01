@@ -1,78 +1,45 @@
-API Nexus is a high-performance, open-source API development platform. Built with a cutting-edge tech stack, it provides a unified interface for testing RESTful APIs and debugging real-time WebSockets with zero friction.
+# Raya
 
-🚀 Key Capabilities
-📡 Advanced WebSocket Debugger
-Bi-directional Streaming: Connect to ws:// or wss:// with a persistent, low-latency handshake.
+**Raya** is a high-performance, open-source API development platform. Built with a modern tech stack, it provides a unified interface for testing **RESTful APIs** and debugging **real-time WebSockets** with zero friction.
 
-Real-time Event Log: Track every outgoing and incoming message with precise timestamps.
+---
 
-Connection Lifecycle: Visual indicators for Connecting, Open, Closing, and Closed states.
+## ✨ Features
 
-Payload Support: Send structured JSON or raw text messages instantly.
+### 📡 WebSocket Client
+- **Real-time Streaming:** Connect to `ws://` or `wss://` endpoints with a persistent handshake.
+- **Message Logging:** Track every outgoing and incoming message with precise timestamps.
+- **Bi-directional Flow:** Send and receive JSON or raw text messages instantly.
+- **Connection Logic:** Visual indicators for `Connecting`, `Open`, and `Closed` states.
 
-🛠️ REST API Orchestrator
-Method Diversity: Support for the full HTTP spectrum (GET, POST, PUT, PATCH, DELETE).
+### 🛠️ REST API Client
+- **Full Method Support:** Execute `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` requests.
+- **Dynamic Headers:** Manage complex request headers and query parameters via a key-value UI.
+- **Body Editor:** Built-in support for Raw JSON payloads with automatic syntax highlighting.
+- **Response Metrics:** View Status Codes, Response Time (ms), and Payload Size at a glance.
 
-Dynamic Context: Manage complex request headers and query parameters via an intuitive key-value interface.
+### 🎨 Modern UX/UI
+- **Responsive Design:** A sleek, "dark-mode" interface built with **TailwindCSS** and **shadcn/ui**.
+- **State Persistence:** Powered by **Zustand** to ensure your configurations stay put after a refresh.
+- **Clean Architecture:** Modular folder structure designed for easy scaling and developer contributions.
 
-Body Editor: Built-in support for Raw JSON payloads with automatic syntax validation.
+---
 
-Response Analytics: Instant feedback on Status Codes, Response Time (ms), and Payload Size.
+## 🛠️ Tech Stack
 
-🎨 Developer Experience (DX)
-State Persistence: Powered by Zustand to ensure your work stays put even after a refresh.
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router, Server Actions)
+- **Language:** TypeScript
+- **Real-time:** [ws](https://github.com/websockets/ws) for Node.js WebSocket implementation
+- **State Management:** Zustand
+- **API Caching:** TanStack Query (v5)
+- **UI Components:** shadcn/ui + TailwindCSS
+- **Icons:** Lucide-react
 
-Responsive Dark Mode: A sleek, "midnight" inspired UI built with TailwindCSS and shadcn/ui.
+---
 
-Clean Architecture: Modular folder structure designed for easy scaling and contributions.
+## 🚀 Getting Started
 
-🛠️ Technical Architecture
-Core: Next.js 15 (App Router & Server Actions)
-
-Logic: TypeScript (Strict Mode)
-
-Real-time: ws for Node.js WebSocket implementation
-
-Styling: TailwindCSS + shadcn/ui
-
-State: Zustand (Client-side) & TanStack Query (Server-state)
-
-Icons: Lucide-React
-
-🏁 Quick Start
-1. Installation
-Bash
-
-git clone https://github.com/YourUsername/api-nexus.git
-cd api-nexus
-npm install
-2. Configure Environment
-Create a .env.local file:
-
-Code snippet
-
-NEXT_PUBLIC_WS_SERVER=ws://localhost:8080
-DATABASE_URL="your-postgresql-url"
-3. Launch the Ecosystem
-Start the WebSocket server:
-
-Bash
-
-node server/index.js
-Start the Next.js development environment:
-
-Bash
-
-npm run dev
-📂 Project Roadmap
-Plaintext
-
-/app
-  ├── (dashboard)      # Main testing interface
-  ├── api              # Next.js API Routes
-/components
-  ├── ui               # shadcn/ui base components
-  ├── ws-panel         # WebSocket specific logic
-  ├── rest-panel       # HTTP request logic
-/hooks                 # Custom hooks for socket management
-/lib                   # Utility functions & API clients
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/dhanyamd/raya](https://github.com/dhanyamd/raya)
+cd raya
