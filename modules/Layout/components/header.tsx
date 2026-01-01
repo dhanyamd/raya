@@ -1,63 +1,40 @@
-"use client";
+"use client"
+import { Unplug, Search, Badge } from 'lucide-react'
+import React from 'react'
+import SearchBar from './search-bar'
+import UserButton from '@/modules/authentication/components/user-button'
 
-import {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import InviteMember from './invite-member'
+import WorkSpace from './workspace'
+import { UserProps, WorkspaceProps } from '../types'
 
 
-import { Loader } from "lucide-react";
-import { useWorkspaceStore } from "../store";
-import { useGetWorkspace } from "@/modules/workspace/hooks/workspace";
-import TabbedSidebar from "@/modules/workspace/components/sidebar";
-import RequestPlayground from "@/modules/request/components/request-playground";
-
-import { useEffect } from "react";
-import { User, Workspace } from "@prisma/client";
-
-interface HeaderProps {
-    user: User;
-    workspace: Workspace;
+interface Props {
+  user: UserProps
+  workspace: WorkspaceProps
 }
 
-const Page = ({ user, workspace }: HeaderProps) => {
-    const { selectedWorkspace, setSelectedWorkspace } = useWorkspaceStore();
+const Header = ({ user, workspace }: Props) => {
 
-    console.log("Header Render:", { propWorkspace: workspace?.id, storeWorkspace: selectedWorkspace?.id });
+  return (
+    <header className='grid grid-cols-5 grid-rows-1 gap-2 overflow-x-auto overflow-hidden p-2 border'>
+      <div className='col-span-2 flex items-center justify-between space-x-2 hover:cursor-pointer hover:opacity-80 ml-4'>
+        <Badge size={28} className='text-brown-400' />      </div>
 
-    useEffect(() => {
-        if (workspace && !selectedWorkspace) {
-            console.log("Syncing workspace to store:", workspace.id);
-            setSelectedWorkspace(workspace);
-        }
-    }, [workspace, selectedWorkspace, setSelectedWorkspace]);
+      <div className='col-span-1 flex items-center justify-between space-x-2'>
+        <div className="border-animation relative p-[1px] rounded flex-1 self-stretch overflow-hidden flex items-center justify-center" aria-hidden="true">
+          <SearchBar />
+        </div>
+      </div>
 
-    const { data: currentWorkspace, isLoading } = useGetWorkspace(selectedWorkspace?.id || workspace?.id!);
+      <div className='col-span-2 flex items-center justify-end space-x-2 hover:cursor-pointer hover:opacity-80'>
+        <InviteMember />
+        {/* @ts-ignore */}
+        <WorkSpace workspace={workspace} />
+        <UserButton user={user} size='sm' />
+      </div>
+    </header>
+  )
+}
 
-    if (isLoading) {
-        return (
-            <div className="flex flex-col items-center justify-center h-full">
-                <Loader className="animate-spin h-6 w-6 text-brown-500" />
-            </div>
-        );
-    }
-
-    return (
-        <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel defaultSize={65} minSize={40}>
-                <RequestPlayground />
-            </ResizablePanel>
-
-            <ResizableHandle withHandle />
-
-            <ResizablePanel defaultSize={35} maxSize={40} minSize={25} className="flex">
-                <div className="flex-1">
-                    <TabbedSidebar currentWorkspace={currentWorkspace || workspace} />
-                </div>
-            </ResizablePanel>
-        </ResizablePanelGroup>
-    )
-};
-
-export default Page;
+export default Header

@@ -1,29 +1,34 @@
 import { Button } from '@/components/ui/button';
 import { Archive, Clock, Code, Share2, ExternalLink, HelpCircle, Plus, Search, Upload, Loader } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCollections } from '@/modules/collection/hooks/collections';
 import CollectionFolder from '@/modules/collection/components/collection-folder';
 import EmptyCollections from '@/modules/collection/components/empty-collection';
 import CreateCollection from '@/modules/collection/components/create-collection';
+
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   currentWorkspace: any;
 }
 
 const TabbedSidebar = ({ currentWorkspace }: Props) => {
-  console.log("Sidebar Render:", { currentWorkspaceId: currentWorkspace?.id });
+  // console.log("Sidebar Render:", { currentWorkspaceId: currentWorkspace?.id });
   const [activeTab, setActiveTab] = useState('Collections');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Handle Tab Switch
+  const handleTabChange = (tabName: string) => {
+    setActiveTab(tabName);
+  };
 
   const { data: collections, isLoading, isError } = useCollections(currentWorkspace?.id);
 
 
 
-  if (isLoading) return (
-    <div className="flex-1 flex items-center justify-center">
-      <Loader className="w-6 h-6 text-brown-400 animate-spin" />
-    </div>
-  )
+
 
   const sidebarItems = [
     { icon: Archive, label: 'Collections' },
@@ -90,24 +95,43 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
   };
 
   return (
-    <div className="flex h-screen bg-zinc-900">
+    <div className="flex h-full bg-zinc-900">
       {/* Sidebar */}
       <div className="w-12 bg-zinc-900 border-r border-zinc-800 flex flex-col items-center py-4 space-y-4">
         {sidebarItems.map((item, index) => (
           <div
             key={index}
-            onClick={() => setActiveTab(item.label)}
+            onClick={() => handleTabChange(item.label)}
             className={`w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${activeTab === item.label
-                ? 'bg-brown-600 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800'
+              ? 'bg-brown-600 text-white'
+              : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800'
               }`}
           >
             <item.icon className="w-4 h-4" />
           </div>
         ))}
+
+        {/* Realtime button added here */}
+        <div
+          onClick={() => router.push('/realtime')}
+          className={`w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${pathname.includes('/realtime')
+            ? 'bg-brown-600 text-white'
+            : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800'
+            }`}
+        >
+          <Upload className="w-4 h-4" />
+        </div>
       </div>
 
-      <div className="flex-1 bg-zinc-900 overflow-y-auto">{renderTabContent()}</div>
+      <div className="flex-1 bg-zinc-900 overflow-y-auto overflow-x-auto">
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <Loader className="w-6 h-6 text-brown-400 animate-spin" />
+          </div>
+        ) : (
+          renderTabContent()
+        )}
+      </div>
 
 
       <CreateCollection

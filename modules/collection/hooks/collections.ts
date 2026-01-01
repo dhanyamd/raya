@@ -5,11 +5,12 @@ export function useCollections(workspaceId: string) {
   return useQuery({
     queryKey: ["collections", workspaceId],
     queryFn: async () => getCollections(workspaceId),
+    enabled: !!workspaceId,
   });
 }
 
 
-export function useCreateCollection(workspaceId: string , name: string) {
+export function useCreateCollection(workspaceId: string, name: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -20,11 +21,11 @@ export function useCreateCollection(workspaceId: string , name: string) {
   });
 }
 
-export function useDeleteCollection(collectionId:string){
+export function useDeleteCollection(collectionId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn:async () => deleteCollection(collectionId),
+    mutationFn: async () => deleteCollection(collectionId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["collections"] });
     }

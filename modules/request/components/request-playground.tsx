@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { REST_METHOD } from "@prisma/client";
 
-import { Unplug } from "lucide-react";
+import { Badge, Unplug } from "lucide-react";
 import TabBar from "./tab-bar";
 import { useSaveRequest } from "../hooks/request";
 import { useRequestPlaygroundStore } from "../store/useRequestStore";
@@ -92,13 +92,13 @@ export default function PlaygroundPage() {
 
   if (!activeTab) {
     return (
-      <div className="flex space-y-4 flex-col h-full items-center justify-center">
-        <div className="flex flex-col justify-center items-center h-40 w-40 border rounded-full bg-zinc-900">
-          <Unplug size={80} className='text-brown-400' />
+      <div className="flex space-y-8 flex-col h-full items-center justify-center">
+        <div className="flex flex-col justify-center items-center ">
+          <Badge size={80} className='text-brown-400' />
         </div>
        
 
-        <div className="bg-zinc-900 p-4 rounded-lg space-y-2">
+        <div className="bg-zinc-900 p-10 rounded-lg space-y-5 ">
           <div className="flex justify-between items-center gap-8">
             <kbd className="px-2 py-1 bg-zinc-800 text-brown-400 text-sm rounded border">Ctrl+Shift+N</kbd>
             <span className="text-zinc-400 font-semibold">New Request</span>

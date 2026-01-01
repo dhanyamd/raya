@@ -1,6 +1,13 @@
 import { createAuthClient } from "better-auth/react"
+
+// Create a single auth client instance with polling disabled
 export const authClient = createAuthClient({
-    baseURL: "http://localhost:3000"
+    baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    fetchOptions: {
+        // Disable automatic refetching
+        onSuccess: () => { },
+    },
 })
 
-export const { signIn, signUp, useSession } = createAuthClient()
+// Export hooks and methods from the single client
+export const { signIn, signUp, useSession } = authClient
