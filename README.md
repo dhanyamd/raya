@@ -2,6 +2,19 @@
 
 **Raya** is a high-performance, open-source API development platform. Built with a modern tech stack, it provides a unified interface for testing **RESTful APIs** and debugging **real-time WebSockets** with zero friction.
 
+**WEBSOCKETS** :
+
+https://github.com/user-attachments/assets/81a039dc-c9c8-4534-b413-3e36f5e3cd72
+
+
+
+**REST** :
+
+https://github.com/user-attachments/assets/7ad0b742-3de0-4547-8db7-b6ac514000d5
+
+
+
+
 ---
 
 ## ✨ Features
@@ -22,6 +35,10 @@
 - **Responsive Design:** A sleek, "dark-mode" interface built with **TailwindCSS** and **shadcn/ui**.
 - **State Persistence:** Powered by **Zustand** to ensure your configurations stay put after a refresh.
 - **Clean Architecture:** Modular folder structure designed for easy scaling and developer contributions.
+
+
+https://github.com/user-attachments/assets/15e772c8-6334-409b-ac42-e503b762a3aa
+
 
 ---
 
