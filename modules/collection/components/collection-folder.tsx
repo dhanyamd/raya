@@ -48,7 +48,7 @@ const CollectionFolder = ({ collection }: Props) => {
     isError,
   } = useGetAllRequestFromCollection(collection.id);
 
-  const { openRequestTab } = useRequestPlaygroundStore();
+  const { openRequestTab, tabs } = useRequestPlaygroundStore();
 
   const requestColorMap: Record<REST_METHOD, string> = {
     [REST_METHOD.GET]: "text-green-500",
@@ -176,20 +176,31 @@ const CollectionFolder = ({ collection }: Props) => {
                   >
                     <div className="flex items-center space-x-3 flex-1">
                       <div className="flex items-center space-x-2">
-                        {/* @ts-ignore */}
-                        <span
-                          className={`text-xs font-bold px-2 py-1 rounded ${
-                            requestColorMap[request.method as keyof typeof requestColorMap] ?? ''
-                          } bg-zinc-800`}
-                        >
-                          {request.method}
-                        </span>
+                        {/* Use live method from open tabs if available, otherwise fallback to DB request method */}
+                        {(() => {
+                          const activeTab = tabs.find(t => t.requestId === request.id);
+                          const displayMethod = activeTab ? activeTab.method : request.method;
+                          return (
+                            <span
+                              className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${requestColorMap[displayMethod as keyof typeof requestColorMap] ?? ''
+                                } bg-zinc-800`}
+                            >
+                              {displayMethod}
+                            </span>
+                          )
+                        })()}
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-sm shadow-green-400/50"></div>
                       </div>
                       <div className="flex flex-col flex-1 min-w-0">
-                        <span className="text-sm text-zinc-200 truncate font-medium">
-                          {request.name || request.url}
-                        </span>
+                        {(() => {
+                          const activeTab = tabs.find(t => t.requestId === request.id);
+                          const displayName = activeTab ? activeTab.title : (request.name || request.url);
+                          return (
+                            <span className="text-sm text-zinc-200 truncate font-medium">
+                              {displayName}
+                            </span>
+                          )
+                        })()}
                         {request.url && request.name && (
                           <span className="text-xs text-zinc-500 truncate">
                             {request.url}

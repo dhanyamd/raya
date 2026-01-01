@@ -123,9 +123,8 @@ export default function PlaygroundPage() {
       <SaveRequestToCollectionModal
         isModalOpen={showSaveModal}
         setIsModalOpen={setShowSaveModal}
-        requestdata={getCurrentRequestData()}
-        initialName={getCurrentRequestData().name}
-      />
+        // requestdata={getCurrentRequestData()}
+        initialName={getCurrentRequestData().name} collectionId={activeTab?.collectionId!}      />
     </div>
   );
 }

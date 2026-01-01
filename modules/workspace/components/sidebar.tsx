@@ -27,9 +27,6 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
   const { data: collections, isLoading, isError } = useCollections(currentWorkspace?.id);
 
 
-
-
-
   const sidebarItems = [
     { icon: Archive, label: 'Collections' },
     { icon: Clock, label: 'History' },

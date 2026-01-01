@@ -26,8 +26,8 @@ import { RotateCcw, Copy, Check, Code, AlignLeft, FileText, Sparkles } from 'luc
 import { cn } from '@/lib/utils'
 
 import { useWorkspaceStore } from '@/modules/Layout/store'
-import { useGenerateJsonBody } from '@/modules/ai/hooks/ai-suggestion'
 import { useRequestPlaygroundStore } from '../store/useRequestStore'
+import { useGenerateJsonBody } from '@/modules/ai/hooks/ai-suggestion'
 
 const MonacoEditor = dynamic(
   () => import('@monaco-editor/react'),

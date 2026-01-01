@@ -129,8 +129,8 @@ export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
       };
     }),
 
-    updateTabFromSavedRequest: (tabId: string, savedRequest: SavedRequest) =>
-  set((state) => ({
+  updateTabFromSavedRequest: (tabId: string, savedRequest: SavedRequest) =>
+   set((state) => ({
     tabs: state.tabs.map((t) =>
       t.id === tabId
         ? {
