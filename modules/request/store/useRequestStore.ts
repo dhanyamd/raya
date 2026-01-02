@@ -7,10 +7,10 @@ interface SavedRequest {
   name: string;
   method: string;
   url: string;
-  body?: string;
-  headers?: string;
-  parameters?: string;
- 
+  body?: string | null;
+  headers?: string | null | any;
+  parameters?: string | null | any;
+
 }
 
 export type RequestTab = {
@@ -18,9 +18,9 @@ export type RequestTab = {
   title: string;
   method: string;
   url: string;
-  body?: string;
-  headers?: string;
-  parameters?: string;
+  body?: string | null;
+  headers?: string | null;
+  parameters?: string | null;
   unsavedChanges?: boolean;
   requestId?: string; // 👈 link to DB request
   collectionId?: string;
@@ -37,12 +37,12 @@ type PlaygroundState = {
   markUnsaved: (id: string, value: boolean) => void;
   openRequestTab: (req: any) => void; // 👈 new
   updateTabFromSavedRequest: (tabId: string, savedRequest: SavedRequest) => void;
-  responseViewerData:ResponseData | null;
-  setResponseViewerData: (data:ResponseData) => void
+  responseViewerData: ResponseData | null;
+  setResponseViewerData: (data: ResponseData) => void
 };
 
 export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
-  responseViewerData:null,
+  responseViewerData: null,
   setResponseViewerData: (data) => set({ responseViewerData: data }),
   tabs: [
     {
@@ -51,7 +51,7 @@ export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
       method: "GET",
       url: "https://echo.hoppscotch.io",
       unsavedChanges: false,
-      
+
     },
   ],
   activeTabId: null,
@@ -69,7 +69,7 @@ export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
         unsavedChanges: true,
       };
       return {
-        tabs: [...state.tabs, newTab ],
+        tabs: [...state.tabs, newTab],
         activeTabId: newTab.id,
 
       };
@@ -130,12 +130,12 @@ export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
     }),
 
   updateTabFromSavedRequest: (tabId: string, savedRequest: SavedRequest) =>
-   set((state) => ({
-    tabs: state.tabs.map((t) =>
-      t.id === tabId
-        ? {
+    set((state) => ({
+      tabs: state.tabs.map((t) =>
+        t.id === tabId
+          ? {
             ...t,
-            id: savedRequest.id, // ✅ Replace temporary id with saved one
+            requestId: savedRequest.id, // ✅ Link to DB request
             title: savedRequest.name,
             method: savedRequest.method,
             body: savedRequest?.body,
@@ -144,9 +144,9 @@ export const useRequestPlaygroundStore = create<PlaygroundState>((set) => ({
             url: savedRequest.url,
             unsavedChanges: false,
           }
-        : t
-    ),
-    activeTabId: savedRequest.id, // ✅ keep active in sync
-  })),
+          : t
+      ),
+      activeTabId: tabId, // ✅ Keep the same tab active
+    })),
 
 }));

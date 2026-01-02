@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/form'
 import { RotateCcw, Copy, Check, Code, AlignLeft, FileText, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { RateLimitIndicator } from '@/modules/ai/components/rate-limit-indicator'
 
 import { useWorkspaceStore } from '@/modules/Layout/store'
 import { useRequestPlaygroundStore } from '../store/useRequestStore'
@@ -58,11 +59,11 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
   const [copied, setCopied] = useState(false)
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
   const [prompt, setPrompt] = useState('')
-  const {selectedWorkspace} = useWorkspaceStore()
+  const { selectedWorkspace } = useWorkspaceStore()
 
-  const {tabs, activeTabId} = useRequestPlaygroundStore();
+  const { tabs, activeTabId } = useRequestPlaygroundStore();
 
-  const {mutateAsync , data , isPending , isError} = useGenerateJsonBody()
+  const { mutateAsync, data, isPending, isError } = useGenerateJsonBody()
 
   const form = useForm<BodyEditorFormData>({
     resolver: zodResolver(bodyEditorSchema),
@@ -99,13 +100,13 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
 
   const onGenerateBody = async (promptText: string) => {
     try {
-     
-    
+
+
       if (bodyValue) {
         try {
           JSON.parse(bodyValue);
         } catch (e) {
-          
+
           console.log('Invalid existing JSON, generating new schema');
         }
       }
@@ -115,7 +116,7 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
         method: tabs.find(t => t.id === activeTabId)?.method || 'POST',
         endpoint: tabs.find(t => t.id === activeTabId)?.url || '/',
         context: `Generate a JSON body with the following requirements: ${promptText}`,
-       
+
       });
 
       if (result?.jsonBody) {
@@ -204,9 +205,10 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
                 />
               </div>
             </div>
+            <RateLimitIndicator />
             <div className="flex items-center gap-2">
               {contentType === 'application/json' && (
-                
+
                 <Button
                   type="button"
                   variant="ghost"
@@ -220,16 +222,16 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
                 </Button>
               )}
 
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleFormat}
-                  className="h-7 px-2 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700"
-                  title="Format JSON"
-                >
-                  <AlignLeft className="h-3 w-3" />
-                </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleFormat}
+                className="h-7 px-2 text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700"
+                title="Format JSON"
+              >
+                <AlignLeft className="h-3 w-3" />
+              </Button>
               <Button
                 type="button"
                 variant="ghost"
@@ -291,7 +293,7 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
           {/* Footer */}
           <div className="bg-zinc-900 border-t border-zinc-700 px-4 py-3 flex items-center justify-between">
             <div className="text-xs text-zinc-400">
-              Lines: {bodyValue?.split('\n').length || 0} | 
+              Lines: {bodyValue?.split('\n').length || 0} |
               Characters: {bodyValue?.length || 0}
             </div>
             <Button

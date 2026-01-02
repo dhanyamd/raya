@@ -16,8 +16,8 @@ export function useAddRequestToCollection(collectionId: string) {
     mutationFn: async (value: Request) => addRequestToCollection(collectionId, value),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["requests", collectionId] });
-      // @ts-ignore
-      updateTabFromSavedRequest(activeTabId!, data);
+      // Use the tab that was active when mutation started
+      updateTabFromSavedRequest(activeTabId!, data as any);
     },
   });
 }
@@ -30,17 +30,15 @@ export function useGetAllRequestFromCollection(collectionId: string) {
   });
 }
 
-export function useSaveRequest(id: string) {
+export function useSaveRequest() {
   const { updateTabFromSavedRequest, activeTabId } = useRequestPlaygroundStore();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (value: Request) => saveRequest(id, value),
+    mutationFn: async ({ id, value }: { id: string; value: Request }) => saveRequest(id, value),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });
-
-      // @ts-ignore
-      updateTabFromSavedRequest(activeTabId!, data);
+      updateTabFromSavedRequest(activeTabId!, data as any);
     },
   });
 }
@@ -49,6 +47,8 @@ export function useSaveRequest(id: string) {
 export function useRunRequest() {
   const { setResponseViewerData, activeTabId, tabs } = useRequestPlaygroundStore();
   const queryClient = useQueryClient();
+
+  const activeTab = tabs.find(t => t.id === activeTabId);
 
   return useMutation({
     mutationFn: async (requestData?: {
@@ -59,12 +59,17 @@ export function useRunRequest() {
       parameters?: Record<string, any>;
       body?: any;
     }) => {
-      // If explicit data passed, use it. Otherwise try to use active tab data as fallback (though component should pass it)
+      // If explicit data passed, use it.
       if (requestData) {
         return await runDirect(requestData);
       }
-      // Fallback to saved (legacy behavior) if no data passed, but we should always pass data
-      return await run(activeTabId!);
+
+      // Fallback to saved version using the actual database requestId
+      if (activeTab?.requestId) {
+        return await run(activeTab.requestId);
+      }
+
+      throw new Error("No request data or ID available to run");
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });

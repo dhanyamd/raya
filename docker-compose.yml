@@ -1,10 +1,21 @@
-name : raya
+name: raya
 services:
   db:
     image: postgres:latest
     environment:
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=postgres
-     - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     ports:
       - 5433:5432
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

@@ -17,7 +17,7 @@ export default function PlaygroundPage() {
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
 
-  const {mutateAsync, isPending} = useSaveRequest(activeTab?.requestId!);
+  const { mutateAsync, isPending } = useSaveRequest();
   const [showSaveModal, setShowSaveModal] = useState(false);
 
 
@@ -37,42 +37,44 @@ export default function PlaygroundPage() {
     };
   };
 
- useHotkeys(
-  "ctrl+s, meta+s",
-  async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  useHotkeys(
+    "ctrl+s, meta+s",
+    async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    if (!activeTab) {
-      toast.error("No active request to save");
-      return;
-    }
-
-    if (activeTab.collectionId) {
-  
-      try {
-        await mutateAsync({
-          url: activeTab.url || "https://echo.hoppscotch.io",
-          method: activeTab.method as REST_METHOD,
-          name: activeTab.title || "Untitled Request",
-          body: activeTab.body,
-          headers: activeTab.headers,
-          parameters: activeTab.parameters,
-          
-        });
-        toast.success("Request updated");
-      } catch (err) {
-        console.error("Failed to update request:", err);
-        toast.error("Failed to update request");
+      if (!activeTab) {
+        toast.error("No active request to save");
+        return;
       }
-    } else {
-     
-      setShowSaveModal(true);
-    }
-  },
-  { preventDefault: true, enableOnFormTags: true },
-  [activeTab]
-);
+
+      if (activeTab.requestId) {
+
+        try {
+          await mutateAsync({
+            id: activeTab.requestId,
+            value: {
+              url: activeTab.url || "https://echo.hoppscotch.io",
+              method: activeTab.method as REST_METHOD,
+              name: activeTab.title || "Untitled Request",
+              body: activeTab.body || "",
+              headers: activeTab.headers || "",
+              parameters: activeTab.parameters || "",
+            }
+          });
+          toast.success("Request updated");
+        } catch (err) {
+          console.error("Failed to update request:", err);
+          toast.error("Failed to update request");
+        }
+      } else {
+
+        setShowSaveModal(true);
+      }
+    },
+    { preventDefault: true, enableOnFormTags: true },
+    [activeTab]
+  );
 
 
   useHotkeys(
@@ -96,7 +98,7 @@ export default function PlaygroundPage() {
         <div className="flex flex-col justify-center items-center ">
           <Badge size={80} className='text-brown-400' />
         </div>
-       
+
 
         <div className="bg-zinc-900 p-10 rounded-lg space-y-5 ">
           <div className="flex justify-between items-center gap-8">
@@ -124,7 +126,7 @@ export default function PlaygroundPage() {
         isModalOpen={showSaveModal}
         setIsModalOpen={setShowSaveModal}
         // requestdata={getCurrentRequestData()}
-        initialName={getCurrentRequestData().name} collectionId={activeTab?.collectionId!}      />
+        initialName={getCurrentRequestData().name} collectionId={activeTab?.collectionId!} />
     </div>
   );
 }

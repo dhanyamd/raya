@@ -3,8 +3,19 @@
 import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { getCachedSession, setCachedSession } from "@/lib/redis";
 
-export const currentUser = async () => {
+// Define the user type for caching
+type CachedUser = {
+    id: string;
+    email: string;
+    name: string | null;
+    image: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export const currentUser = async (): Promise<CachedUser | null> => {
     try {
         const session = await auth.api.getSession({
             headers: await headers()
@@ -14,6 +25,16 @@ export const currentUser = async () => {
             return null;
         }
 
+        // Check Redis cache first
+        const cacheKey = session.user.id;
+        const cachedUser = await getCachedSession<CachedUser>(cacheKey);
+
+        if (cachedUser) {
+            console.log("Cache HIT: Returning cached user");
+            return cachedUser;
+        }
+
+        console.log("Cache MISS: Fetching from database");
         const user = await db.user.findUnique({
             where: {
                 id: session.user.id
@@ -28,6 +49,11 @@ export const currentUser = async () => {
             }
         });
 
+        // Cache the user for 1 hour (3600 seconds)
+        if (user) {
+            await setCachedSession(cacheKey, user, 3600);
+        }
+
         return user;
     } catch (error) {
         console.error("Error fetching current user:", JSON.stringify(error, null, 2));
@@ -38,5 +64,3 @@ export const currentUser = async () => {
         return null;
     }
 };
-
-
