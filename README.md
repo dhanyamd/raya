@@ -37,7 +37,10 @@ https://github.com/user-attachments/assets/7ad0b742-3de0-4547-8db7-b6ac514000d5
 - **Clean Architecture:** Modular folder structure designed for easy scaling and developer contributions.
 
 
-https://github.com/user-attachments/assets/15e772c8-6334-409b-ac42-e503b762a3aa
+
+
+https://github.com/user-attachments/assets/a70a3d25-29cc-416d-8e62-68e21de0104d
+
 
 
 ---
