@@ -35,9 +35,10 @@ interface Props {
     updatedAt: Date;
     workspaceId: string;
   };
+  folderColor?: string;
 }
 
-const CollectionFolder = ({ collection }: Props) => {
+const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isAddRequestOpen, setIsAddRequestOpen] = useState(false);
@@ -55,11 +56,11 @@ const CollectionFolder = ({ collection }: Props) => {
   const { openRequestTab, tabs } = useRequestPlaygroundStore();
 
   const requestColorMap: Record<REST_METHOD, string> = {
-    [REST_METHOD.GET]: "text-green-500",
-    [REST_METHOD.POST]: "text-blue-500",
-    [REST_METHOD.PUT]: "text-yellow-500",
-    [REST_METHOD.DELETE]: "text-red-500",
-    [REST_METHOD.PATCH]: "text-orange-500",
+    [REST_METHOD.GET]: "text-neon-green",
+    [REST_METHOD.POST]: "text-neon-purple",
+    [REST_METHOD.PUT]: "text-neon-orange",
+    [REST_METHOD.DELETE]: "text-red-500", // Keep red for danger
+    [REST_METHOD.PATCH]: "text-neon-yellow",
   };
 
   const handleDeleteRequest = async (id: string, e: React.MouseEvent) => {
@@ -98,19 +99,19 @@ const CollectionFolder = ({ collection }: Props) => {
       >
         <div className="flex flex-col w-full">
           {/* Collection Header */}
-          <div className="flex flex-row justify-between items-center p-2 flex-1 w-full hover:bg-zinc-900 rounded-md">
+          <div className="flex flex-row justify-between items-center p-2 flex-1 w-full hover:bg-neon-purple/5 rounded-md">
             <CollapsibleTrigger className="flex flex-row justify-start items-center space-x-2 flex-1">
               <div className="flex items-center space-x-1">
                 {hasRequests ? (
                   isCollapsed ? (
-                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                    <ChevronDown className={`w-4 h-4 ${folderColor} opacity-70`} />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-zinc-400" />
+                    <ChevronRight className={`w-4 h-4 ${folderColor} opacity-70`} />
                   )
                 ) : (
                   <div className="w-4 h-4" /> // Spacer when no requests
                 )}
-                <Folder className="w-5 h-5 text-zinc-400" />
+                <Folder className={`w-5 h-5 ${folderColor}`} />
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium text-zinc-200 capitalize">
@@ -129,14 +130,14 @@ const CollectionFolder = ({ collection }: Props) => {
 
             <div className="flex flex-row justify-center items-center space-x-2">
               <FilePlus
-                className="w-4 h-4 text-zinc-400 hover:text-brown-400 cursor-pointer"
+                className="w-4 h-4 text-zinc-400 hover:text-neon-purple cursor-pointer"
                 onClick={() => setIsAddRequestOpen(true)}
               />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="p-1 hover:bg-zinc-800 rounded">
-                    <EllipsisVertical className="w-4 h-4 text-zinc-400 hover:text-brown-400" />
+                    <EllipsisVertical className="w-4 h-4 text-zinc-400 hover:text-neon-purple" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48">
@@ -183,7 +184,7 @@ const CollectionFolder = ({ collection }: Props) => {
             {isPending ? (
               <div className="pl-8 py-2">
                 <div className="flex items-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-zinc-600 border-t-brown-400 rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-zinc-600 border-t-neon-purple rounded-full animate-spin"></div>
                   <span className="text-xs text-zinc-500">
                     Loading requests...
                   </span>
@@ -211,8 +212,8 @@ const CollectionFolder = ({ collection }: Props) => {
                           const displayMethod = activeTab ? activeTab.method : request.method;
                           return (
                             <span
-                              className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${requestColorMap[displayMethod as keyof typeof requestColorMap] ?? ''
-                                } bg-zinc-800`}
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${requestColorMap[displayMethod as keyof typeof requestColorMap] ?? ''
+                                } bg-sidebar-accent/50 border border-sidebar-border`}
                             >
                               {displayMethod}
                             </span>
@@ -230,11 +231,19 @@ const CollectionFolder = ({ collection }: Props) => {
                             </span>
                           )
                         })()}
-                        {request.url && request.name && (
-                          <span className="text-xs text-zinc-500 truncate">
-                            {request.url}
-                          </span>
-                        )}
+                        {(() => {
+                          const activeTab = tabs.find(t => t.requestId === request.id);
+                          const displayUrl = activeTab ? activeTab.url : request.url;
+
+                          if (displayUrl && request.name) {
+                            return (
+                              <span className="text-xs text-zinc-500 truncate">
+                                {displayUrl}
+                              </span>
+                            );
+                          }
+                          return null;
+                        })()}
                       </div>
                     </div>
 

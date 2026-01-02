@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { env } from '@/lib/env';
+
+const google = createGoogleGenerativeAI({
+    apiKey: env.GOOGLE_GENERATIVE_AI_API_KEY,
+});
 import { generateText } from 'ai';
 import { checkRateLimit } from '@/lib/redis';
 import { currentUser } from '@/modules/authentication/actions';

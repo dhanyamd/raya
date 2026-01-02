@@ -299,7 +299,7 @@ const BodyEditor: React.FC<BodyEditorProps> = ({
             <Button
               type="button"
               size="sm"
-              className="bg-brown-400 hover:bg-brown-500 text-white h-7"
+              className="bg-red-500 hover:bg-rose-500 text-white h-7"
               onClick={() => form.handleSubmit(onSubmit)()}
             >
               Update Body

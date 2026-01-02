@@ -40,8 +40,15 @@ const Page = () => {
 
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={25} maxSize={40} minSize={20} className="flex">
-        <div className="flex-1">
+      <ResizablePanel
+        defaultSize={25}
+        maxSize={40}
+        minSize={15}
+        collapsible={true}
+        collapsedSize={0}
+        className="flex"
+      >
+        <div className="flex-1 h-full"> {/* Ensure height full */}
           <TabbedSidebar currentWorkspace={currentWorkspace} />
         </div>
       </ResizablePanel>

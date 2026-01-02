@@ -82,10 +82,10 @@ const RequestBar = ({ tab, updateTab }: Props) => {
                 type='submit'
                 onClick={onSendRequest}
                 disabled={isPending || !tab.url}
-                className="ml-2 text-white  font-bold bg-brown-500 hover:bg-brown-600"
+                className="ml-2 text-white font-bold bg-orange-900 hover:bg-orange-800"
             >
-                <Send className="mr-2" />
-                Send
+                <Send className="mr-1" />
+                Send 
             </Button>
         </div>
     )
