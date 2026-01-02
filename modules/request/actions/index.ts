@@ -5,7 +5,7 @@ import { REST_METHOD } from "@prisma/client";
 
 import axios, { AxiosRequestConfig } from "axios";
 
-export type Request= {
+export type Request = {
   name: string;
   method: REST_METHOD;
   url: string;
@@ -15,56 +15,56 @@ export type Request= {
 };
 
 export const addRequestToCollection = async (collectionId: string, value: Request) => {
-    const request = await db.request.create(
-        {
-            data: {
-                collectionId,
-                name: value.name,
-                method: value.method,
-                url: value.url,
-                body: value.body,
-                headers: value.headers,
-                parameters: value.parameters,
-            }
-        }
-    );
-    return request;
+  const request = await db.request.create(
+    {
+      data: {
+        collectionId,
+        name: value.name,
+        method: value.method,
+        url: value.url,
+        body: value.body,
+        headers: value.headers,
+        parameters: value.parameters,
+      }
+    }
+  );
+  return request;
 }
 
 export const saveRequest = async (id: string, value: Request) => {
-    const request = await db.request.update(
-        {
-            where: {
-                id,
-            },
-            data: {
-                name: value.name,
-                method: value.method,
-                url: value.url,
-                body: value.body,
-                headers: value.headers,
-                parameters: value.parameters,
-            }
-        }
-    );
-    return request;
+  const request = await db.request.update(
+    {
+      where: {
+        id,
+      },
+      data: {
+        name: value.name,
+        method: value.method,
+        url: value.url,
+        body: value.body,
+        headers: value.headers,
+        parameters: value.parameters,
+      }
+    }
+  );
+  return request;
 }
 
 export const getAllRequestFromCollection = async (collectionId: string) => {
-    const requests = await db.request.findMany({
-        where: {
-            collectionId,
-        },
-    });
-    return requests;
+  const requests = await db.request.findMany({
+    where: {
+      collectionId,
+    },
+  });
+  return requests;
 }
 
 export async function sendRequest(req: {
-    method: string;
-    url: string;
-    headers?: Record<string, string>;
-    params?: Record<string, string>;
-    body?: string;
+  method: string;
+  url: string;
+  headers?: Record<string, string>;
+  params?: Record<string, string>;
+  body?: string;
 }) {
   const config: AxiosRequestConfig = {
     method: req.method,
@@ -75,19 +75,19 @@ export async function sendRequest(req: {
     validateStatus: () => true,
   };
   const start = performance.now()
-  try{
+  try {
     const res = await axios(config);
     const end = performance.now()
-    
-    const duration = end - start;
-    const size = res.headers["context-length"] || 
-    new TextEncoder().encode(JSON.stringify(res.data)).length;
 
-     return {
-      status: res.status,        
-      statusText: res.statusText, 
-      headers: Object.fromEntries(Object.entries(res.headers)),      
-      data: res.data,            
+    const duration = end - start;
+    const size = res.headers["context-length"] ||
+      new TextEncoder().encode(JSON.stringify(res.data)).length;
+
+    return {
+      status: res.status,
+      statusText: res.statusText,
+      headers: Object.fromEntries(Object.entries(res.headers)),
+      data: res.data,
       duration: Math.round(duration),
       size,
     };
@@ -110,7 +110,7 @@ export async function run(requestId: string) {
       throw new Error(`Request with id ${requestId} not found`);
     }
 
-   
+
     const requestConfig = {
       method: request.method,
       url: request.url,
@@ -121,7 +121,7 @@ export async function run(requestId: string) {
 
     const result = await sendRequest(requestConfig as any);
 
-   
+
     const requestRun = await db.requestRun.create({
       data: {
         requestId: request.id,
@@ -133,7 +133,7 @@ export async function run(requestId: string) {
       }
     });
 
-  
+
     if (result.data && !result.error) {
       await db.request.update({
         where: { id: request.id },
@@ -243,4 +243,25 @@ export async function runDirect(requestData: {
       requestRun: failedRun
     };
   }
+}
+
+export const deleteRequest = async (id: string) => {
+  const request = await db.request.delete({
+    where: {
+      id,
+    },
+  });
+  return request;
+}
+
+export const renameRequest = async (id: string, name: string) => {
+  const request = await db.request.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+    },
+  });
+  return request;
 }

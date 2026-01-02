@@ -24,8 +24,9 @@ import AddRequestCollectionModal from "./add-request-modal";
 import { REST_METHOD } from "@prisma/client";
 import EditCollectionModal from "./edit-collection";
 import DeleteCollectionModal from "./delete-collection";
-import { useGetAllRequestFromCollection } from "@/modules/request/hooks/request";
+import { useGetAllRequestFromCollection, useDeleteRequest, useRenameRequest } from "@/modules/request/hooks/request";
 import { useRequestPlaygroundStore } from "@/modules/request/store/useRequestStore";
+import { toast } from "sonner";
 
 interface Props {
   collection: {
@@ -48,6 +49,9 @@ const CollectionFolder = ({ collection }: Props) => {
     isError,
   } = useGetAllRequestFromCollection(collection.id);
 
+  const { mutateAsync: deleteRequestMutation } = useDeleteRequest();
+  const { mutateAsync: renameRequestMutation } = useRenameRequest();
+
   const { openRequestTab, tabs } = useRequestPlaygroundStore();
 
   const requestColorMap: Record<REST_METHOD, string> = {
@@ -56,6 +60,31 @@ const CollectionFolder = ({ collection }: Props) => {
     [REST_METHOD.PUT]: "text-yellow-500",
     [REST_METHOD.DELETE]: "text-red-500",
     [REST_METHOD.PATCH]: "text-orange-500",
+  };
+
+  const handleDeleteRequest = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm("Are you sure you want to delete this request?")) {
+      try {
+        await deleteRequestMutation(id);
+        toast.success("Request deleted");
+      } catch (err) {
+        toast.error("Failed to delete request");
+      }
+    }
+  };
+
+  const handleRenameRequest = async (id: string, currentName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newName = prompt("Enter new request name:", currentName);
+    if (newName && newName !== currentName) {
+      try {
+        await renameRequestMutation({ id, name: newName });
+        toast.success("Request renamed");
+      } catch (err) {
+        toast.error("Failed to rename request");
+      }
+    }
   };
 
   const hasRequests = requestData && requestData.length > 0;
@@ -217,11 +246,11 @@ const CollectionFolder = ({ collection }: Props) => {
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-32">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => handleRenameRequest(request.id, request.name || request.url, e)}>
                             <Edit className="text-blue-400 mr-2 w-3 h-3" />
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => handleDeleteRequest(request.id, e)}>
                             <Trash className="text-red-400 mr-2 w-3 h-3" />
                             Delete
                           </DropdownMenuItem>
