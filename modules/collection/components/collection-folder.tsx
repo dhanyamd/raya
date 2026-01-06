@@ -27,6 +27,7 @@ import DeleteCollectionModal from "./delete-collection";
 import { useGetAllRequestFromCollection, useDeleteRequest, useRenameRequest } from "@/modules/request/hooks/request";
 import { useRequestPlaygroundStore } from "@/modules/request/store/useRequestStore";
 import { toast } from "sonner";
+import RenameRequestModal from "./rename-request-modal";
 
 interface Props {
   collection: {
@@ -42,6 +43,8 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isAddRequestOpen, setIsAddRequestOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const [requestToRename, setRequestToRename] = useState<{ id: string, name: string, method?: string, url?: string } | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const {
@@ -75,17 +78,10 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
     }
   };
 
-  const handleRenameRequest = async (id: string, currentName: string, e: React.MouseEvent) => {
+  const handleRenameRequest = (id: string, currentName: string, method: string, url: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const newName = prompt("Enter new request name:", currentName);
-    if (newName && newName !== currentName) {
-      try {
-        await renameRequestMutation({ id, name: newName });
-        toast.success("Request renamed");
-      } catch (err) {
-        toast.error("Failed to rename request");
-      }
-    }
+    setRequestToRename({ id, name: currentName, method, url });
+    setIsRenameOpen(true);
   };
 
   const hasRequests = requestData && requestData.length > 0;
@@ -111,7 +107,7 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
                 ) : (
                   <div className="w-4 h-4" /> // Spacer when no requests
                 )}
-                <Folder className={`w-5 h-5 ${folderColor}`} />
+                <Folder className={`w-5 h-5 ${folderColor} drop-shadow-[0_0_8px_rgba(168,85,247,0.2)]`} />
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium text-zinc-200 capitalize">
@@ -119,7 +115,7 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
                 </span>
                 {hasRequests && (
                   <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+                    <div className="w-1.5 h-1.5 bg-neon-green/80 rounded-full animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.5)]"></div>
                     <span className="text-xs text-zinc-400">
                       ({requestData.length})
                     </span>
@@ -219,7 +215,7 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
                             </span>
                           )
                         })()}
-                        <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-sm shadow-green-400/50"></div>
+                        <div className="w-1.5 h-1.5 bg-neon-green/80 rounded-full animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.5)]"></div>
                       </div>
                       <div className="flex flex-col flex-1 min-w-0">
                         {(() => {
@@ -255,7 +251,7 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-32">
-                          <DropdownMenuItem onClick={(e) => handleRenameRequest(request.id, request.name || request.url, e)}>
+                          <DropdownMenuItem onClick={(e) => handleRenameRequest(request.id, request.name || request.url, request.method, request.url, e)}>
                             <Edit className="text-blue-400 mr-2 w-3 h-3" />
                             Edit
                           </DropdownMenuItem>
@@ -300,6 +296,18 @@ const CollectionFolder = ({ collection, folderColor = "text-zinc-400" }: Props) 
         collectionId={collection.id}
         initialName="Untitled Request"
       />
+
+      {requestToRename && (
+        <RenameRequestModal
+          isModalOpen={isRenameOpen}
+          setIsModalOpen={setIsRenameOpen}
+          requestId={requestToRename.id}
+          currentName={requestToRename.name}
+          requestMethod={requestToRename.method}
+          requestUrl={requestToRename.url}
+          workspaceId={collection.workspaceId}
+        />
+      )}
     </>
   );
 };

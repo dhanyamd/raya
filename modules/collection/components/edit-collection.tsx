@@ -43,10 +43,11 @@ const EditCollectionModal = ({
     >
       <div className="space-y-4">
         <input
-          className="w-full p-2 border rounded"
+          className="w-full p-3 bg-zinc-900/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-neon-purple focus:border-neon-purple transition-all shadow-inner"
           placeholder="Collection name..."
           value={name}
           onChange={(e) => setName(e.target.value)}
+          autoFocus
         />
       </div>
     </Modal>

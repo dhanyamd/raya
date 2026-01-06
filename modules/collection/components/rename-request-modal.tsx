@@ -2,55 +2,87 @@
 import Modal from "@/components/ui/modal";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Sparkle, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRequestPlaygroundStore } from "../store/useRequestStore";
+import { useRenameRequest } from "@/modules/request/hooks/request";
 import { useSuggestRequestName } from "@/modules/ai/hooks/ai-suggestion";
 
-const AddNameModal = ({
-    isModalOpen,
-    setIsModalOpen,
-    tabId,
-}: {
+interface Props {
     isModalOpen: boolean;
     setIsModalOpen: (open: boolean) => void;
-    tabId: string;
-}) => {
-    const { updateTab, tabs, markUnsaved } = useRequestPlaygroundStore();
-    const { mutateAsync, data, isPending, isError } = useSuggestRequestName();
-    const tab = tabs.find((t: any) => t.id === tabId);
+    requestId: string;
+    currentName: string;
+    requestMethod?: string;
+    requestUrl?: string;
+    workspaceId?: string;
+}
 
-    const [name, setName] = useState(tab?.title || "");
+const RenameRequestModal = ({
+    isModalOpen,
+    setIsModalOpen,
+    requestId,
+    currentName,
+    requestMethod = "GET",
+    requestUrl = "",
+    workspaceId
+}: Props) => {
+    const [name, setName] = useState(currentName);
     const [suggestions, setSuggestions] = useState<Array<{ name: string; reasoning: string }>>([]);
 
+    const { mutateAsync: renameRequest, isPending: isRenaming } = useRenameRequest();
+    const { mutateAsync: suggestName, isPending: isSuggesting } = useSuggestRequestName();
 
     useEffect(() => {
-        if (tab) setName(tab.title);
-    }, [tabId]);
+        if (isModalOpen) {
+            setName(currentName);
+            setSuggestions([]);
+        }
+    }, [isModalOpen, currentName]);
 
     const handleSubmit = async () => {
-        if (!name.trim()) return;
+        if (!name.trim() || name === currentName) {
+            if (name === currentName) setIsModalOpen(false);
+            return;
+        }
+
         try {
-            updateTab(tabId, { title: name });
-            markUnsaved(tabId, true);
-            toast.success("Request name updated");
+            await renameRequest({ id: requestId, name });
+            toast.success("Request renamed");
             setIsModalOpen(false);
-            setSuggestions([]);
         } catch (err) {
-            toast.error("Failed to update request name");
+            toast.error("Failed to rename request");
             console.error(err);
+        }
+    };
+
+    const handleGenerateName = async () => {
+        try {
+            const result = await suggestName({
+                workspaceName: workspaceId || "Default Workspace",
+                method: (requestMethod as "GET" | "POST" | "PUT" | "PATCH" | "DELETE") || "GET",
+                url: requestUrl || "",
+                description: `Request: ${currentName}`
+            });
+
+            if (result.suggestions && result.suggestions.length > 0) {
+                setSuggestions(result.suggestions);
+                setName(result.suggestions[0].name);
+                toast.success("Generated name suggestions");
+            }
+        } catch (error) {
+            toast.error("Failed to generate name suggestions");
         }
     };
 
     return (
         <Modal
             title="Rename Request"
-            description="Give your request a name"
+            description="Update the name of your request"
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onSubmit={handleSubmit}
-            submitText="Save"
+            submitText={isRenaming ? "Saving..." : "Save"}
             submitVariant="default"
         >
             <div className="flex flex-col gap-4">
@@ -60,41 +92,27 @@ const AddNameModal = ({
                         placeholder="Request Name..."
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") handleSubmit();
+                        }}
                         autoFocus
                     />
 
                     <Button
                         variant={"outline"}
                         size={"icon"}
-                        onClick={async () => {
-                            if (!tab) return;
-                            try {
-                                const result = await mutateAsync({
-                                    workspaceName: tab.workspaceId || "Default Workspace",
-                                    method: (tab.method as "GET" | "POST" | "PUT" | "PATCH" | "DELETE") || "GET",
-                                    url: tab.url || "",
-                                    description: `Request in collection ${tab.collectionId || ""}`
-                                });
-
-                                if (result.suggestions && result.suggestions.length > 0) {
-                                    setSuggestions(result.suggestions);
-                                    setName(result.suggestions[0].name);
-                                    toast.success("Generated name suggestions");
-                                }
-                            } catch (error) {
-                                toast.error("Failed to generate name suggestions");
-                            }
-                        }}
-                        disabled={isPending}
+                        onClick={handleGenerateName}
+                        disabled={isSuggesting}
                         className="border-zinc-700 hover:border-neon-purple/50 hover:bg-neon-purple/10 hover:text-neon-purple transition-all"
                     >
-                        {isPending ? (
+                        {isSuggesting ? (
                             <div className="w-4 h-4 border-2 border-zinc-600 border-t-neon-purple rounded-full animate-spin" />
                         ) : (
                             <Sparkles className="h-4 w-4" />
                         )}
                     </Button>
                 </div>
+
                 {suggestions.length > 0 && (
                     <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
                         <span className="text-xs text-zinc-500 font-medium ml-1">AI Suggestions</span>
@@ -112,10 +130,9 @@ const AddNameModal = ({
                         ))}
                     </div>
                 )}
-
             </div>
         </Modal>
     );
 };
 
-export default AddNameModal;
+export default RenameRequestModal;

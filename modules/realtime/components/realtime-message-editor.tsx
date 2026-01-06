@@ -73,7 +73,6 @@ const RealtimeMessageEditor = () => {
     editorRef.current = editor
     monacoRef.current = monaco
 
-
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       allowComments: false,
@@ -151,7 +150,7 @@ const RealtimeMessageEditor = () => {
 
     
       {/* Editor */}
-      <div className="relative">
+      <div className="relative" >
         <div className="border border-zinc-700 rounded-lg overflow-hidden">
           {/* Monaco Editor */}
           <Editor

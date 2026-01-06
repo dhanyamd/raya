@@ -64,8 +64,12 @@ const TabbedSidebar = ({ currentWorkspace }: Props) => {
 
 
         <div className="p-4 border-b border-sidebar-border">
-          <Button variant="outline" className="w-full justify-start border-dashed border-sidebar-border hover:bg-sidebar-accent hover:text-foreground text-muted-foreground" onClick={() => setIsModalOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
+          <Button
+            variant="outline"
+            className="w-full justify-start border-dashed border-neon-purple/30 bg-neon-purple/5 hover:bg-neon-purple/10 text-zinc-300 hover:text-white hover:border-neon-purple/70 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.05)] hover:shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <Plus className="w-4 h-4 mr-2 text-neon-purple" />
             <span className="text-sm font-medium">New Collection</span>
           </Button>
         </div>
